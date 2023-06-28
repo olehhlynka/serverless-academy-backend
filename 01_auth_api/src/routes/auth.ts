@@ -1,10 +1,11 @@
-const Router = require("express");
-const router = new Router();
-const authController = require("../controllers/authController");
-const {
+import { Router } from "express";
+import authController from "../controllers/authController";
+import {
   validateUserCredentials,
   validateToken,
-} = require("../middlewares/middlewares");
+} from "../middlewares/middlewares";
+
+const router: Router = Router();
 
 router.post(
   "/sign-in",
@@ -22,4 +23,4 @@ router.post(
   authController.refreshToken
 );
 
-module.exports = router;
+export default router;

@@ -1,5 +1,5 @@
-const app = require("./src/app");
-const { PORT } = require("./src/config/constants");
+import app from "./src/app";
+import { PORT } from "./src/config/constants";
 
 app.listen(PORT, () => {
   console.log(

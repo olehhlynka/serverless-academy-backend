@@ -1,14 +1,15 @@
-const authService = require("../services/authService");
+import authService from "../services/authService";
+import { Request, Response } from "express";
 
 class AuthController {
-  async signIn(req, res) {
+  async signIn(req: Request, res: Response) {
     const { email, password } = req.body;
     try {
       const { user, tokens } = await authService.loginUser(
         email,
         password
       );
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         data: {
           id: user.id,
@@ -16,7 +17,7 @@ class AuthController {
           refreshToken: tokens.refreshToken,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (error.message === "Invalid credentials") {
         return res
           .status(404)
@@ -29,12 +30,12 @@ class AuthController {
     }
   }
 
-  async signUp(req, res) {
+  async signUp(req: Request, res: Response) {
     const { email, password } = req.body;
     try {
       const { user, tokens } =
         await authService.registerUser(email, password);
-      res.status(201).json({
+      return res.status(201).json({
         success: true,
         data: {
           id: user.id,
@@ -42,7 +43,7 @@ class AuthController {
           refreshToken: tokens.refreshToken,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (
         error.message === `Email ${email} is already taken`
       ) {
@@ -58,22 +59,18 @@ class AuthController {
     }
   }
 
-  async refreshToken(req, res) {
+  async refreshToken(req: Request, res: Response) {
     const { refreshToken } = req.body;
     try {
-      if (!refreshToken) {
-        return res
-          .status(401)
-          .json({ success: false, error: "Unauthorized" });
-      }
       const user =
-        await authService.getUserFromRefreshToken(
+        await authService.getUserInfoFromRefreshToken(
           refreshToken
         );
       if (
-        (await authService.getUserRefreshToken(
+        !(await authService.isValidRefreshToken(
+          refreshToken,
           user.email
-        )) !== refreshToken
+        ))
       ) {
         return res
           .status(403)
@@ -88,13 +85,7 @@ class AuthController {
           accessToken: accessToken,
         },
       });
-    } catch (error) {
-      if (error.message === "Invalid token") {
-        return res.status(403).json({
-          success: false,
-          error: error.message,
-        });
-      }
+    } catch (error: any) {
       res.status(502).json({
         success: false,
         error: "Invalid request",
@@ -103,4 +94,4 @@ class AuthController {
   }
 }
 
-module.exports = new AuthController();
+export default new AuthController();

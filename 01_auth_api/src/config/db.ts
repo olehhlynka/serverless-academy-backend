@@ -1,11 +1,11 @@
-const {
+import {
   DB_USER,
   DB_HOST,
   DB_NAME,
   DB_PASSWORD,
   DB_PORT,
-} = require("./constants");
-const { Pool } = require("pg");
+} from "./constants";
+import { Pool } from "pg";
 
 const pool = new Pool({
   user: DB_USER,
@@ -15,4 +15,4 @@ const pool = new Pool({
   database: DB_NAME,
 });
 
-module.exports = pool;
+export default pool;
