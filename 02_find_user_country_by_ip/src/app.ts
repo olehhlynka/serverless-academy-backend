@@ -4,7 +4,6 @@ import express, {
   Response,
 } from "express";
 import net from "net";
-import { PORT } from "./config/constants.config";
 import { findCountryByIP } from "./data/ipData";
 
 const app: Express = express();
@@ -17,8 +16,4 @@ app.get("/", async (req: Request, res: Response) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(
-    `⚡️[server] Server is running on port ${PORT}`
-  );
-});
+export default app;

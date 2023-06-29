@@ -6,7 +6,7 @@ import { ipToNumeric } from "../utils/ip.util";
 
 const countriesIPDataPath = path.join(
   __dirname,
-  "../../ip_data.CSV"
+  "../../../ip_data.CSV"
 );
 const countriesIPData: IPData[] = [];
 
