@@ -10,17 +10,21 @@ const countriesIPDataPath = path.join(
 );
 const countriesIPData: IPData[] = [];
 
-fs.createReadStream(countriesIPDataPath)
-  .pipe(csv(["from", "to", "countryShort", "country"]))
-  .on("data", (data) => {
-    const ipData: IPData = {
-      from: data.from,
-      to: data.to,
-      countryShort: data.countryShort,
-      country: data.country,
-    };
-    countriesIPData.push(ipData);
-  });
+try {
+  fs.createReadStream(countriesIPDataPath)
+    .pipe(csv(["from", "to", "countryShort", "country"]))
+    .on("data", (data) => {
+      const ipData: IPData = {
+        from: data.from,
+        to: data.to,
+        countryShort: data.countryShort,
+        country: data.country,
+      };
+      countriesIPData.push(ipData);
+    });
+} catch (error: any) {
+  console.log(error.message);
+}
 
 const findCountryIPData = (
   numericIP: number
