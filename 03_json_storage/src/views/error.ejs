@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        <%= message %> – <%= status %>
+    </title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            font-size: 15px;
+        }
+
+        .Error {
+            font-size: 1.35em;
+
+            color: #6061BE;
+
+        }
+
+        .Error .message {
+            font-weight: 200;
+            letter-spacing: 0.095em;
+        }
+
+        .Error .message a {
+            text-decoration: none;
+            color: inherit;
+
+            border-bottom: 1px dotted #6061BE;
+
+        }
+
+        .Error .status {
+            font-weight: 700;
+        }
+
+        .Error .code {
+            display: none;
+        }
+
+        .Error .dot {
+            font-weight: 100;
+        }
+
+        @media screen and (max-width: 800px) {
+            body {
+                font-size: 10px;
+            }
+
+            .Error {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .Error .status {
+                font-size: 1.1em;
+            }
+
+            .Error .dot {
+                display: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Error">
+        <span class="status">
+            <%= message %>
+        </span>
+        <span class="code">
+            <%= status %>
+        </span>
+        <span class="dot">•</span>
+
+        <span class="message">Please try your request again or contact support.</span>
+
+    </div>
+</body>
+
+</html>
