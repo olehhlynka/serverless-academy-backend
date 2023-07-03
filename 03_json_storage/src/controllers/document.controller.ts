@@ -1,16 +1,27 @@
 import { Request, Response } from "express";
-import {
-  saveDocument,
-  findDocument,
-} from "../services/db.service";
+import dbService from "../services/db.service";
 
 class DocumentController {
-  async saveDocument(req: Request, res: Response) {
+  async create(req: Request, res: Response) {
     try {
-      const params = req.params;
-      const newDocument = await saveDocument(
-        params.path,
-        params.fileName,
+      const { path, fileName } = req.params;
+      const existingDocument = await dbService.findDocument(
+        path,
+        fileName
+      );
+      if (existingDocument) {
+        const updatedDocument =
+          await dbService.updateDocument(
+            existingDocument,
+            JSON.stringify(req.body)
+          );
+        return res
+          .status(201)
+          .json(JSON.parse(updatedDocument.data));
+      }
+      const newDocument = await dbService.saveDocument(
+        path,
+        fileName,
         JSON.stringify(req.body)
       );
       res.status(201).json(JSON.parse(newDocument.data));
@@ -22,22 +33,19 @@ class DocumentController {
     }
   }
 
-  async findDocument(req: Request, res: Response) {
+  async find(req: Request, res: Response, next: any) {
     try {
-      const params = req.params;
-      const document = await findDocument(
-        params.path,
-        params.fileName
+      const { path, fileName } = req.params;
+      const document = await dbService.findDocument(
+        path,
+        fileName
       );
       if (document) {
         return res
           .status(200)
           .json(JSON.parse(document.data));
       }
-      res.status(404).render("error", {
-        message: "Not Found",
-        status: 404,
-      });
+      next();
     } catch (error: any) {
       res.status(500).render("error", {
         message: "Internal Server Error",

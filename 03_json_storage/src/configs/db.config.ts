@@ -9,3 +9,7 @@ try {
     "Failed to connect to the database"
   );
 }
+
+const db = mongoose.connection;
+
+export { db };
